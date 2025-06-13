@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:vote_nova/home_page.dart';
+import 'package:vote_nova/core/navigation/navigation.dart';
+import 'package:vote_nova/core/utility/media_query.dart';
+import 'package:vote_nova/views/home/home_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,16 +16,8 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> gotohome() async {
     log('navigation called');
     Future.delayed(Duration(milliseconds: 2700), () {
-      Navigator.pushAndRemoveUntil(
-        // ignore: use_build_context_synchronously
-        context,
-        MaterialPageRoute(
-          builder: (ctx) {
-            return MyHome();
-          },
-        ),
-        (route) => false,
-      );
+      // ignore: use_build_context_synchronously
+      CustomNavigation.pushAndRemoveUntil(context, MyHome());
     });
   }
 
@@ -37,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        height: MediaQuery.of(context).size.height,
+        height: deviceHeight(context),
         decoration: BoxDecoration(
           color: Color(0xFF004aad),
           image: DecorationImage(
