@@ -1,3 +1,8 @@
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
+import 'package:vote_nova/home_page.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -6,12 +11,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    gotohome();
-    super.initState();
-  }
-
   Future<void> gotohome() async {
     log('navigation called');
     Future.delayed(Duration(milliseconds: 2700), () {
@@ -26,6 +25,12 @@ class _SplashScreenState extends State<SplashScreen> {
         (route) => false,
       );
     });
+  }
+
+  @override
+  void initState() {
+    gotohome();
+    super.initState();
   }
 
   @override
