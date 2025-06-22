@@ -4,7 +4,6 @@ import 'package:vote_nova/core/navigation/navigation.dart';
 import 'package:vote_nova/core/utility/colors.dart';
 import 'package:vote_nova/core/utility/media_query.dart';
 import 'package:vote_nova/views/candidate/add_candidate_page.dart';
-import 'package:vote_nova/views/home/vote_page.dart';
 
 class MyHome extends StatelessWidget {
   const MyHome({super.key});
@@ -13,15 +12,20 @@ class MyHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.lightblue,
+        automaticallyImplyLeading: false,
+        backgroundColor: AppColors.primayColor,
         title: Text(
           'Candidates',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textColor,
+          ),
         ),
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Container(
+        child: SizedBox(
           width: deviceWidth(context),
 
           height: deviceHeight(context),
@@ -32,8 +36,8 @@ class MyHome extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(width: 2, color: Colors.black),
-                    color: const Color.fromARGB(255, 141, 213, 246),
+                    border: Border.all(width: 2, color: Colors.grey),
+                    color: AppColors.primayColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
 
@@ -46,25 +50,110 @@ class MyHome extends StatelessWidget {
                         //! Restat icon
                         GestureDetector(
                           onTap: () {
-                            showAboutDialog(
+                            showDialog(
                               context: context,
-                              applicationName: 'ssss',
-                              barrierLabel: '2222',
-                              applicationLegalese: 'rrr',
-                              children: [
-                                Container(
-                                  height: 50,
-                                  width: 50,
-                                  color: Colors.amberAccent,
-                                ),
-                              ],
+                              barrierDismissible:
+                                  false, // Prevent dismiss on tap outside
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  backgroundColor:
+                                      Colors
+                                          .transparent, // Makes outer area transparent
+                                  insetPadding: EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                  ),
+                                  child: Container(
+                                    padding: EdgeInsets.all(20),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(16),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black12,
+                                          blurRadius: 20,
+                                          offset: Offset(0, 8),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          'Restart Data?',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 12),
+                                        Text(
+                                          'If you restart, you will lose all your previous vote data. Please make sure you really want to proceed.',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                        SizedBox(height: 24),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Expanded(
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.grey[300],
+                                                  foregroundColor: Colors.black,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          12,
+                                                        ),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(
+                                                    context,
+                                                  ).pop(); // Dismiss
+                                                },
+                                                child: Text('Cancel'),
+                                              ),
+                                            ),
+                                            SizedBox(width: 12),
+                                            Expanded(
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.grey[300],
+                                                  foregroundColor: Colors.black,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          12,
+                                                        ),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(
+                                                    context,
+                                                  ).pop(); // Do action
+                                                  // Add your confirm logic here
+                                                },
+                                                child: Text('Restart'),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
                             );
                           },
                           child: Container(
                             height: 50,
                             width: 50,
                             decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 184, 170, 130),
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Icon(Icons.restart_alt_outlined, size: 28),
@@ -80,7 +169,7 @@ class MyHome extends StatelessWidget {
                             height: 50,
                             width: 50,
                             decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 184, 170, 130),
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
 
@@ -104,7 +193,7 @@ class MyHome extends StatelessWidget {
 
                         width: double.maxFinite,
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 141, 213, 246),
+                          color: AppColors.primayColor,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Center(
@@ -113,26 +202,274 @@ class MyHome extends StatelessWidget {
                               'Name',
                               style: TextStyle(
                                 fontSize: 18,
+                                color: AppColors.textColor,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            subtitle: Text('Team name'),
-                            leading: CircleAvatar(
-                              radius: 30,
-                              backgroundImage: AssetImage(
-                                'asset/splash_image.png',
+                            subtitle: Text(
+                              'Team name',
+                              style: TextStyle(color: AppColors.textColor),
+                            ),
+                            leading: GestureDetector(
+                              onTap: () {
+                                showCandidateProfileDialog(
+                                  context: context,
+                                  name: 'adil',
+                                  imageUrl: 'asset/splash_image.png',
+                                );
+                              },
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundImage: AssetImage(
+                                  'asset/splash_image.png',
+                                ),
                               ),
                             ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
+                                //! Delete
                                 IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.delete_outline, size: 25),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder:
+                                          (context) => Dialog(
+                                            backgroundColor: Colors.transparent,
+                                            child: Container(
+                                              padding: EdgeInsets.all(20),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black26,
+                                                    blurRadius: 12,
+                                                    offset: Offset(0, 6),
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .warning_amber_rounded,
+                                                        color: Colors.orange,
+                                                        size: 28,
+                                                      ),
+                                                      SizedBox(width: 8),
+                                                      Text(
+                                                        'Delete Candidate?',
+                                                        style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black87,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 12),
+                                                  Text(
+                                                    'If you delete this candidate, the voting process will restart and all current vote data will be lost.',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.grey[700],
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 24),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: ElevatedButton(
+                                                          onPressed:
+                                                              () =>
+                                                                  Navigator.pop(
+                                                                    context,
+                                                                  ),
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .grey[300],
+                                                            foregroundColor:
+                                                                Colors.black87,
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                    12,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                          child: Text('Cancel'),
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 12),
+                                                      Expanded(
+                                                        child: ElevatedButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                              context,
+                                                            );
+                                                            // ✅ Call your deletion logic
+                                                          },
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .grey[300],
+                                                            foregroundColor:
+                                                                Colors
+                                                                    .redAccent,
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                    12,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                          child: Text('Delete'),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.delete_outline,
+                                    size: 25,
+                                    color: AppColors.textColor,
+                                  ),
                                 ),
+                                //! Edit
                                 IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.edit, size: 25),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder:
+                                          (context) => Dialog(
+                                            backgroundColor: Colors.transparent,
+                                            child: Container(
+                                              padding: EdgeInsets.all(20),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black26,
+                                                    blurRadius: 12,
+                                                    offset: Offset(0, 6),
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.edit_note_rounded,
+                                                        color:
+                                                            Colors.blueAccent,
+                                                        size: 28,
+                                                      ),
+                                                      SizedBox(width: 8),
+                                                      Text(
+                                                        'Edit Candidate?',
+                                                        style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black87,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 12),
+                                                  Text(
+                                                    'Editing this candidate will restart the voting process and remove all existing vote data. Are you sure you want to proceed?',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.grey[700],
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 24),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: ElevatedButton(
+                                                          onPressed:
+                                                              () =>
+                                                                  Navigator.pop(
+                                                                    context,
+                                                                  ),
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .grey[300],
+                                                            foregroundColor:
+                                                                Colors.black87,
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                    12,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                          child: Text('Cancel'),
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 12),
+                                                      Expanded(
+                                                        child: ElevatedButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                              context,
+                                                            );
+                                                          },
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .grey[300],
+                                                            foregroundColor:
+                                                                Colors
+                                                                    .blueAccent,
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                    12,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                          child: Text('Edit'),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.edit,
+                                    size: 25,
+                                    color: AppColors.textColor,
+                                  ),
                                 ),
                               ],
                             ),
@@ -147,54 +484,90 @@ class MyHome extends StatelessWidget {
           ),
         ),
       ),
+
       //!--------------------------
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 10, top: 10),
-        child: Container(
-          color: Colors.white,
-          child: Row(
-            children: [
-              SizedBox(width: 10),
-              //! Home
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.lightblue,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.home_rounded, size: 25),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 10),
-              //! Vote bottom icon
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.lightblue,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: IconButton(
-                      onPressed: () {
-                        CustomNavigation.push(context, VotePage());
-                      },
-                      icon: Icon(Icons.how_to_vote_sharp, size: 25),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 10),
-            ],
-          ),
-        ),
-      ),
     );
   }
+}
+
+void showCandidateProfileDialog({
+  required BuildContext context,
+  required String name,
+  required String imageUrl,
+  String? teamName,
+}) {
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder:
+        (context) => Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 12,
+                  offset: Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Profile Picture
+                CircleAvatar(
+                  radius: 65,
+                  backgroundImage: AssetImage(imageUrl),
+                  backgroundColor: Colors.grey[200],
+                ),
+                SizedBox(height: 16),
+
+                // Candidate Name
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+
+                // Team Name (if available)
+                if (teamName != null && teamName.isNotEmpty) ...[
+                  SizedBox(height: 6),
+                  Text(
+                    'Team: $teamName',
+                    style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                  ),
+                ],
+
+                SizedBox(height: 20),
+
+                // Close Button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      "Close",
+                      style: TextStyle(color: AppColors.primayColor),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+  );
 }

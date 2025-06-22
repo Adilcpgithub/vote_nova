@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:vote_nova/views/splash_page.dart';
 
 void main() {
