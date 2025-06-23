@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vote_nova/core/utility/colors.dart';
 import 'package:vote_nova/core/utility/media_query.dart';
+import 'package:vote_nova/core/utility/simple_message.dart';
 
 class VotePage extends StatefulWidget {
   const VotePage({super.key});
@@ -256,10 +257,92 @@ class _VotePageState extends State<VotePage> {
                                         ),
                                       ),
                                       onPressed: () {
-                                        Navigator.of(
-                                          context,
-                                        ).pop(); // Do action
+                                        Navigator.of(context).pop();
+                                        setState(() {
+                                          selectedCandidate = null;
+                                        });
+                                        // Do action
                                         // Add your confirm logic here
+                                        //!---------
+                                        showModalBottomSheet(
+                                          context: context,
+                                          isScrollControlled:
+                                              true, // Important for full/half height
+                                          backgroundColor: Colors.green[100],
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(20),
+                                            ),
+                                          ),
+                                          builder: (context) {
+                                            return SizedBox(
+                                              height:
+                                                  deviceHeight(context) * 0.5,
+                                              // 👈 Half of screen
+                                              width: deviceWidth(context),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                  24,
+                                                ),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.check_circle,
+                                                      color: Colors.green,
+                                                      size: 48,
+                                                    ),
+                                                    SizedBox(height: 16),
+                                                    Text(
+                                                      "Voted Successfully!",
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 10),
+                                                    Text(
+                                                      "Your vote has been recorded.",
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                      ),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                    SizedBox(height: 30),
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor:
+                                                            Colors.green,
+                                                        foregroundColor:
+                                                            Colors.white,
+                                                        padding:
+                                                            EdgeInsets.symmetric(
+                                                              horizontal: 32,
+                                                              vertical: 12,
+                                                            ),
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                8,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                      child: Text("Continue"),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+
+                                        //!---------
                                       },
                                       child: Text('Confirm'),
                                     ),
@@ -273,7 +356,8 @@ class _VotePageState extends State<VotePage> {
                     },
                   );
                 } else {
-                  //! show message
+                  //! ScaffoldMesssager show message
+                  SimpleMessage.show(context, "Please choose a candidate");
                 }
               },
               child: Padding(

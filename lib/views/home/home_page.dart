@@ -4,6 +4,7 @@ import 'package:vote_nova/core/navigation/navigation.dart';
 import 'package:vote_nova/core/utility/colors.dart';
 import 'package:vote_nova/core/utility/media_query.dart';
 import 'package:vote_nova/views/candidate/add_candidate_page.dart';
+import 'package:vote_nova/views/candidate/edit_candidate.dart';
 
 class MyHome extends StatelessWidget {
   const MyHome({super.key});
@@ -438,6 +439,10 @@ class MyHome extends StatelessWidget {
                                                           onPressed: () {
                                                             Navigator.pop(
                                                               context,
+                                                            );
+                                                            CustomNavigation.push(
+                                                              context,
+                                                              EditCandidate(),
                                                             );
                                                           },
                                                           style: ElevatedButton.styleFrom(

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:vote_nova/core/utility/colors.dart';
 
-class AddCandidatePage extends StatefulWidget {
-  const AddCandidatePage({super.key});
+class EditCandidate extends StatefulWidget {
+  const EditCandidate({super.key});
 
   @override
-  State<AddCandidatePage> createState() => _AddCandidatePageState();
+  State<EditCandidate> createState() => _EditCandidateState();
 }
 
-class _AddCandidatePageState extends State<AddCandidatePage> {
+class _EditCandidateState extends State<EditCandidate> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _teamController = TextEditingController();
@@ -20,7 +20,7 @@ class _AddCandidatePageState extends State<AddCandidatePage> {
         automaticallyImplyLeading: true,
         backgroundColor: AppColors.primayColor,
         title: Text(
-          "Add New Candidate",
+          "Edit Candidate",
           style: TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.bold,
@@ -70,7 +70,7 @@ class _AddCandidatePageState extends State<AddCandidatePage> {
 
                 const SizedBox(height: 30),
 
-                // Name Input Field
+                //! Name Input Field
                 TextFormField(
                   controller: _nameController,
                   validator: (value) {
@@ -99,6 +99,7 @@ class _AddCandidatePageState extends State<AddCandidatePage> {
                       Icons.person,
                       color: AppColors.primayColor,
                     ),
+
                     filled: true,
                     fillColor: AppColors.textColor,
                     border: OutlineInputBorder(
@@ -115,7 +116,7 @@ class _AddCandidatePageState extends State<AddCandidatePage> {
                     ),
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.red),
+                      borderSide: BorderSide(color: Colors.redAccent),
                     ),
                     focusedErrorBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red, width: 1),
@@ -160,7 +161,10 @@ class _AddCandidatePageState extends State<AddCandidatePage> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: AppColors.primayColor),
+                      borderSide: BorderSide(
+                        color: AppColors.primayColor,
+                        width: 2,
+                      ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -170,12 +174,16 @@ class _AddCandidatePageState extends State<AddCandidatePage> {
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(color: Colors.redAccent),
                     ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red, width: 1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
 
                 const SizedBox(height: 30),
 
-                // Save Button
+                // !Save Button
                 SizedBox(
                   width: double.infinity,
                   height: 55,
@@ -186,23 +194,23 @@ class _AddCandidatePageState extends State<AddCandidatePage> {
                       size: 24,
                     ),
                     label: Text(
-                      "Save Candidate",
+                      "Update Candidate",
                       style: TextStyle(
                         fontSize: 16,
                         color: AppColors.textColor,
                       ),
                     ),
                     onPressed: () {
-                      //! Save logic
+                      //! Update Candidate logic
                       if (_formKey.currentState!.validate()) {
                         //! Save logic here
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Candidate Added successfully'),
+                            content: Text('Candidate Updated successfully'),
                           ),
                         );
                       }
-                      //  Navigator.pop(context);
+                      // Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primayColor,

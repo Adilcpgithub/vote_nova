@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:vote_nova/core/navigation/navigation.dart';
@@ -57,7 +58,29 @@ class StartvoteShowresultPage extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       showPasswordDialog(context, () {
-                        CustomNavigation.push(context, ResultPage(key: key));
+                        CustomNavigation.push(
+                          context,
+                          ResultsPage(
+                            results: [
+                              CandidateResult(
+                                name: "Alice",
+                                votes: 143,
+
+                                imagePath: "asset/splash_image.png",
+                              ),
+                              CandidateResult(
+                                name: "Bob",
+                                votes: 82,
+                                imagePath: "asset/splash_image.png",
+                              ),
+                              CandidateResult(
+                                name: "Charlie",
+                                votes: 45,
+                                imagePath: "asset/splash_image.png",
+                              ),
+                            ],
+                          ),
+                        );
                       });
                       // CustomNavigation.push(context, ResultPage());
                     },
@@ -94,9 +117,10 @@ class StartvoteShowresultPage extends StatelessWidget {
 }
 
 void showPasswordDialog(BuildContext context, Function onSuccess) {
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   bool obscureText = true;
-  Timer? _debounce;
+
+  final formKey = GlobalKey<FormState>();
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -111,38 +135,49 @@ void showPasswordDialog(BuildContext context, Function onSuccess) {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a password';
-                      }
-                      return null;
-                    },
-                    controller: _passwordController,
-                    obscureText: obscureText,
-                    decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.primayColor),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.primayColor),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.redAccent),
-                      ),
-                      labelText: 'Password',
-                      labelStyle: TextStyle(color: AppColors.primayColor),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          obscureText ? Icons.visibility_off : Icons.visibility,
-                          color: AppColors.primayColor,
+                  Form(
+                    key: formKey,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Password cannot be empty';
+                        }
+                        if (value.length < 4) {
+                          return 'Password must be at least 4 characters';
+                        }
+                        if (value != '123@'.trim()) {
+                          return 'Password is incorrect';
+                        }
+                        return null;
+                      },
+                      controller: passwordController,
+                      obscureText: obscureText,
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.primayColor),
                         ),
-                        onPressed:
-                            () => setState(() => obscureText = !obscureText),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.primayColor),
-                        borderRadius: BorderRadius.circular(10),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.primayColor),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.redAccent),
+                        ),
+                        labelText: 'Password',
+                        labelStyle: TextStyle(color: AppColors.primayColor),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: AppColors.primayColor,
+                          ),
+                          onPressed:
+                              () => setState(() => obscureText = !obscureText),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.primayColor),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                     ),
                   ),
@@ -167,27 +202,19 @@ void showPasswordDialog(BuildContext context, Function onSuccess) {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            if (_debounce?.isActive ?? false) return;
-                            _debounce = Timer(Duration(milliseconds: 1500), () {
-                              String enteredPassword = _passwordController.text;
-                              if (enteredPassword == "1234") {
+                            log('log calling ');
+
+                            log('inside the timer');
+                            if (formKey.currentState!.validate()) {
+                              log('validating ');
+                              String enteredPassword = passwordController.text;
+                              if (enteredPassword == "123@") {
                                 Navigator.pop(context);
                                 onSuccess(); // call your function
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    backgroundColor: AppColors.primayColor,
-                                    content: Text(
-                                      "Incorrect password",
-                                      style: TextStyle(
-                                        color: AppColors.textColor,
-                                      ),
-                                    ),
-                                    duration: Duration(milliseconds: 1200),
-                                  ),
-                                );
                               }
-                            });
+                            } else {
+                              log('validating ');
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
