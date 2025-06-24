@@ -52,7 +52,7 @@ class _VotePageState extends State<VotePage> {
           ),
         ),
         centerTitle: true,
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
       ),
       body: Stack(
         children: [

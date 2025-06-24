@@ -15,7 +15,7 @@ class ResultsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         backgroundColor: AppColors.primayColor,
         title: Text(
           "Election Results",

@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:vote_nova/core/utility/colors.dart';
 
 class AddCandidatePage extends StatefulWidget {
@@ -12,6 +17,34 @@ class _AddCandidatePageState extends State<AddCandidatePage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _teamController = TextEditingController();
+  String? imagePath;
+  Future<String?> pickAndSaveImage() async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.gallery);
+
+    if (picked == null) return null;
+
+    // Get permanent app storage directory
+    final appDir = await getApplicationDocumentsDirectory();
+
+    // Create a new file path
+    final fileName = basename(picked.path);
+    final savedImage = await File(picked.path).copy('${appDir.path}/$fileName');
+
+    return savedImage.path;
+  }
+
+  void pickImage() async {
+    final path = await pickAndSaveImage();
+    if (path != null) {
+      setState(() {
+        imagePath = path;
+      });
+
+      // Save it to Hive or whatever storage you're using
+      print('Saved image path: $path');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +75,8 @@ class _AddCandidatePageState extends State<AddCandidatePage> {
                 // Image Upload Section
                 InkWell(
                   onTap: () {
-                    // TODO: Implement image picker
+                    //! Picking the profile image form the gallery
+                    pickImage();
                   },
                   child: Stack(
                     alignment: Alignment.center,
@@ -52,18 +86,46 @@ class _AddCandidatePageState extends State<AddCandidatePage> {
                         width: 160,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
-                          color: AppColors.lightblue,
-                          image: const DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage('asset/splash_image.png'),
-                          ),
+                          color: AppColors.primayColor,
+                          image:
+                              imagePath != null
+                                  ? DecorationImage(
+                                    image: FileImage(File(imagePath!)),
+                                    fit: BoxFit.cover,
+                                  )
+                                  : null,
                         ),
                       ),
-                      const Icon(
-                        Icons.camera_alt,
-                        size: 50,
-                        color: Colors.white70,
-                      ),
+
+                      if (imagePath == null)
+                        Icon(Icons.camera_alt, size: 50, color: Colors.white70),
+
+                      if (imagePath != null)
+                        Positioned(
+                          top: 10,
+                          right: 10,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                imagePath = null;
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.primayColor,
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Icon(
+                                  Icons.close,
+                                  size: 25,
+                                  color: AppColors.textColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -169,6 +231,10 @@ class _AddCandidatePageState extends State<AddCandidatePage> {
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(color: Colors.redAccent),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red, width: 1),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                 ),
