@@ -55,7 +55,7 @@ class _EditCandidateState extends State<EditCandidate> {
                           color: AppColors.lightblue,
                           image: const DecorationImage(
                             fit: BoxFit.cover,
-                            image: AssetImage('asset/splash_image.png'),
+                            image: AssetImage('assets/splash_image.png'),
                           ),
                         ),
                       ),

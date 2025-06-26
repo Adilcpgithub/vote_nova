@@ -216,13 +216,13 @@ class MyHome extends StatelessWidget {
                                 showCandidateProfileDialog(
                                   context: context,
                                   name: 'adil',
-                                  imageUrl: 'asset/splash_image.png',
+                                  imageUrl: 'assets/splash_image.png',
                                 );
                               },
                               child: CircleAvatar(
                                 radius: 30,
                                 backgroundImage: AssetImage(
-                                  'asset/splash_image.png',
+                                  'assets/splash_image.png',
                                 ),
                               ),
                             ),

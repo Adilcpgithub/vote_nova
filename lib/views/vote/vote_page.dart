@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_nova/core/utility/colors.dart';
@@ -40,6 +42,7 @@ class _VotePageState extends State<VotePage> {
   ];
   final AudioPlayer player = AudioPlayer();
   Future<void> playBeebSound() async {
+    log("Playing beep sound");
     await player.play(AssetSource('asset/beep_sound.mp3'));
   }
 
@@ -111,7 +114,7 @@ class _VotePageState extends State<VotePage> {
                                   backgroundColor: Colors.blue,
                                   foregroundColor: Colors.white,
                                   backgroundImage: AssetImage(
-                                    'asset/splash_image.png',
+                                    'assets/splash_image.png',
                                   ),
                                 ),
                                 SizedBox(width: 16),
@@ -262,7 +265,7 @@ class _VotePageState extends State<VotePage> {
                                           ),
                                         ),
                                       ),
-                                      onPressed: () {
+                                      onPressed: () async {
                                         Navigator.of(context).pop();
                                         setState(() {
                                           selectedCandidate = null;
@@ -270,7 +273,7 @@ class _VotePageState extends State<VotePage> {
                                         // Do action
                                         // Add your confirm logic here
                                         //! Playing Beeb Sound Here
-                                        playBeebSound();
+                                        await playBeebSound();
                                         //!---------
                                         showModalBottomSheet(
                                           context: context,
