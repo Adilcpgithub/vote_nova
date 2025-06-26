@@ -189,176 +189,71 @@ class _VotePageState extends State<VotePage> {
             left: 10,
             right: 10,
             child: GestureDetector(
-              onTap: () {
+              onTap: () async {
                 if (selectedCandidate != null) {
-                  showDialog(
+                  setState(() {
+                    selectedCandidate = null;
+                  });
+                  // Do action
+                  // Add your confirm logic here
+                  //! Playing Beeb Sound Here
+                  await playBeebSound();
+                  //!---------
+                  showModalBottomSheet(
                     context: context,
-                    barrierDismissible: false, // Prevent dismiss on tap outside
-                    builder: (BuildContext context) {
-                      return Dialog(
-                        backgroundColor:
-                            Colors.transparent, // Makes outer area transparent
-                        insetPadding: EdgeInsets.symmetric(horizontal: 24),
-                        child: Container(
-                          padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 20,
-                                offset: Offset(0, 8),
-                              ),
-                            ],
-                          ),
+                    isScrollControlled: true, // Important for full/half height
+                    backgroundColor: Colors.green[100],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                    builder: (context) {
+                      return SizedBox(
+                        height: deviceHeight(context) * 0.5,
+                        // 👈 Half of screen
+                        width: deviceWidth(context),
+                        child: Padding(
+                          padding: const EdgeInsets.all(24),
                           child: Column(
-                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // Text(
-                              //   'Confirm Your vote',
-                              //   style: TextStyle(
-                              //     fontSize: 20,
-                              //     fontWeight: FontWeight.bold,
-                              //   ),
-                              // ),
-                              SizedBox(height: 12),
+                              Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                                size: 48,
+                              ),
+                              SizedBox(height: 16),
                               Text(
-                                'You are voted to \n "${candidates[selectedCandidate!]['name'] ?? 'Unknow'}"',
-                                textAlign: TextAlign.center,
+                                "Voted Successfully!",
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(height: 24),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.grey[300],
-                                        foregroundColor: Colors.black,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.of(context).pop(); // Dismiss
-                                      },
-                                      child: Text('Cancel'),
-                                    ),
+                              SizedBox(height: 10),
+                              Text(
+                                "Your vote has been recorded.",
+                                style: TextStyle(fontSize: 16),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 30),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  foregroundColor: Colors.white,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 32,
+                                    vertical: 12,
                                   ),
-                                  SizedBox(width: 12),
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.grey[300],
-                                        foregroundColor: Colors.black,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
-                                        ),
-                                      ),
-                                      onPressed: () async {
-                                        Navigator.of(context).pop();
-                                        setState(() {
-                                          selectedCandidate = null;
-                                        });
-                                        // Do action
-                                        // Add your confirm logic here
-                                        //! Playing Beeb Sound Here
-                                        await playBeebSound();
-                                        //!---------
-                                        showModalBottomSheet(
-                                          context: context,
-                                          isScrollControlled:
-                                              true, // Important for full/half height
-                                          backgroundColor: Colors.green[100],
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(20),
-                                            ),
-                                          ),
-                                          builder: (context) {
-                                            return SizedBox(
-                                              height:
-                                                  deviceHeight(context) * 0.5,
-                                              // 👈 Half of screen
-                                              width: deviceWidth(context),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(
-                                                  24,
-                                                ),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.check_circle,
-                                                      color: Colors.green,
-                                                      size: 48,
-                                                    ),
-                                                    SizedBox(height: 16),
-                                                    Text(
-                                                      "Voted Successfully!",
-                                                      style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 10),
-                                                    Text(
-                                                      "Your vote has been recorded.",
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                      ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                    SizedBox(height: 30),
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      style: ElevatedButton.styleFrom(
-                                                        backgroundColor:
-                                                            Colors.green,
-                                                        foregroundColor:
-                                                            Colors.white,
-                                                        padding:
-                                                            EdgeInsets.symmetric(
-                                                              horizontal: 32,
-                                                              vertical: 12,
-                                                            ),
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                8,
-                                                              ),
-                                                        ),
-                                                      ),
-                                                      child: Text("Continue"),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        );
-
-                                        //!---------
-                                      },
-                                      child: Text('Confirm'),
-                                    ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
-                                ],
+                                ),
+                                child: Text("Continue"),
                               ),
                             ],
                           ),
