@@ -66,17 +66,17 @@ class StartvoteShowresultPage extends StatelessWidget {
                                 name: "Alice",
                                 votes: 143,
 
-                                imagePath: "asset/splash_image.png",
+                                imagePath: "assets/splash_image.png",
                               ),
                               CandidateResult(
                                 name: "Bob",
                                 votes: 82,
-                                imagePath: "asset/splash_image.png",
+                                imagePath: "assets/splash_image.png",
                               ),
                               CandidateResult(
                                 name: "Charlie",
                                 votes: 45,
-                                imagePath: "asset/splash_image.png",
+                                imagePath: "assets/splash_image.png",
                               ),
                             ],
                           ),

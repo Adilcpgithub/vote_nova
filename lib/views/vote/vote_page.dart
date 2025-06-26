@@ -14,42 +14,31 @@ class VotePage extends StatefulWidget {
 }
 
 class _VotePageState extends State<VotePage> {
+  bool isMuted = false;
   int? selectedCandidate;
 
   final candidates = [
     {'name': 'Adil cp'},
     {'name': 'irfan'},
-    {
-      'name':
-          'Alisjslkjlkakljslkdfjalkjfdflsdjflkwjelkasdghhlhlkhlkdjlkfjslkddjfosjlksjlkajlkce Johnson',
-    },
-    {'name': 'Bssssob Smith'},
-    {
-      'name':
-          'Alisjslkjlkakljslkdfjalkjfdflsdjflkwjelkasdghhlhlkhlkdjlkfjslkddjfosjlksjlkajlkce Johnson',
-    },
-    {'name': 'Bssssob Smith'},
-    {
-      'name':
-          'Alisjslkjlkakljslkdfjalkjfdflsdjflkwjelkasdghhlhlkhlkdjlkfjslkddjfosjlksjlkajlkce Johnson',
-    },
-    {'name': 'Bssssob Smith'},
-    {
-      'name':
-          'Alisjslkjlkakljslkdfjalkjfdflsdjflkwjelkasdghhlhlkhlkdjlkfjslkddjfosjlksjlkajlkce Johnson',
-    },
-    {'name': 'Bssssob Smith'},
+    {'name': 'Afsal'},
+    {'name': 'Sajith'},
+    {'name': 'Shameer'},
+    {'name': 'Shan'},
+    {'name': 'Shanil'},
+    {'name': 'Shanil'},
   ];
   final AudioPlayer player = AudioPlayer();
   Future<void> playBeebSound() async {
     log("Playing beep sound");
-    await player.play(AssetSource('asset/beep_sound.mp3'));
+    //! Check if the sound is muted
+    if (!isMuted) await player.play(AssetSource('asset/beep_sound.mp3'));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.textColor,
+
       appBar: AppBar(
         backgroundColor: AppColors.primayColor,
         title: Text(
@@ -62,6 +51,28 @@ class _VotePageState extends State<VotePage> {
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: AppColors.textColor),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: IconButton(
+              icon: Icon(
+                isMuted ? Icons.volume_off : Icons.volume_up,
+                color: AppColors.textColor,
+              ),
+              onPressed: () {
+                setState(() {
+                  isMuted = !isMuted;
+                });
+              },
+            ),
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -96,7 +107,7 @@ class _VotePageState extends State<VotePage> {
                                     isSelected
                                         ? AppColors.primayColor
                                         : Colors.grey.shade300,
-                                width: 2,
+                                width: 1,
                               ),
                               borderRadius: BorderRadius.circular(16),
                               boxShadow: [
@@ -111,10 +122,20 @@ class _VotePageState extends State<VotePage> {
                               children: [
                                 CircleAvatar(
                                   radius: 60,
-                                  backgroundColor: Colors.blue,
+                                  backgroundColor: const Color.fromARGB(
+                                    255,
+                                    245,
+                                    243,
+                                    243,
+                                  ),
                                   foregroundColor: Colors.white,
-                                  backgroundImage: AssetImage(
-                                    'assets/splash_image.png',
+                                  // backgroundImage: AssetImage(
+                                  //   'assets/splash_image.png',
+                                  // ),
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 60,
+                                    color: Colors.grey.shade400,
                                   ),
                                 ),
                                 SizedBox(width: 16),
@@ -152,13 +173,18 @@ class _VotePageState extends State<VotePage> {
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppColors.primayColor,
-                                      width: 2,
+                                      color: Colors.grey.shade300,
+                                      width: 1,
                                     ),
                                     color:
                                         isSelected
                                             ? AppColors.primayColor
-                                            : Colors.transparent,
+                                            : const Color.fromARGB(
+                                              0,
+                                              183,
+                                              18,
+                                              18,
+                                            ),
                                   ),
                                   child:
                                       isSelected
