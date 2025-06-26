@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vote_nova/core/utility/colors.dart';
 import 'package:vote_nova/views/home/home_page.dart';
-import 'package:vote_nova/views/home/s_vote_s_result_page.dart';
+import 'package:vote_nova/views/home/vote_and_result_page.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_nova/core/utility/colors.dart';
 import 'package:vote_nova/core/utility/media_query.dart';
@@ -37,6 +38,11 @@ class _VotePageState extends State<VotePage> {
     },
     {'name': 'Bssssob Smith'},
   ];
+  final AudioPlayer player = AudioPlayer();
+  Future<void> playBeebSound() async {
+    await player.play(AssetSource('asset/beep_sound.mp3'));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -263,6 +269,8 @@ class _VotePageState extends State<VotePage> {
                                         });
                                         // Do action
                                         // Add your confirm logic here
+                                        //! Playing Beeb Sound Here
+                                        playBeebSound();
                                         //!---------
                                         showModalBottomSheet(
                                           context: context,
