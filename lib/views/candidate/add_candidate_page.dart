@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:vote_nova/blocs/bloc/candidate_bloc.dart';
 import 'package:vote_nova/core/utility/colors.dart';
+import 'package:vote_nova/data/models/candidate_model.dart';
 
 class AddCandidatePage extends StatefulWidget {
   const AddCandidatePage({super.key});
@@ -140,6 +143,7 @@ class _AddCandidatePageState extends State<AddCandidatePage> {
 
                 // Name Input Field
                 TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: _nameController,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
@@ -195,9 +199,13 @@ class _AddCandidatePageState extends State<AddCandidatePage> {
                 //! Candidate Team
                 TextFormField(
                   controller: _teamController,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+
                   validator: (value) {
                     final trimmed = value?.trim() ?? '';
-                    if (trimmed.isNotEmpty && trimmed.length > 15) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please enter team name';
+                    } else if (trimmed.isNotEmpty && trimmed.length > 15) {
                       return 'Team name must be 15 characters or less';
                     }
                     return null; // No error if empty or valid
@@ -266,15 +274,30 @@ class _AddCandidatePageState extends State<AddCandidatePage> {
                     ),
                     onPressed: () {
                       //! Save logic
-                      if (_formKey.currentState!.validate()) {
+                      if (_formKey.currentState!.validate() &&
+                          imagePath != null) {
                         //! Save logic here
+                        context.read<CandidateBloc>().add(
+                          AddCandidate(
+                            Candidate(
+                              name: _nameController.text.trim(),
+                              teamName: _teamController.text.trim(),
+                              imagePath: imagePath!,
+                            ),
+                          ),
+                        );
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Candidate Added successfully'),
                           ),
                         );
+                        Navigator.pop(context);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Please add image')),
+                        );
                       }
-                      //  Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primayColor,
